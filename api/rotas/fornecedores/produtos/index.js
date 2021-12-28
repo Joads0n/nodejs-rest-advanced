@@ -3,13 +3,13 @@ const Tabela = require('./TabelaProdutos')
 const Produto = require('./Produto')
 
 roteador.get('/', async (req, res) => {
-    const produtos = await Tabela.listar(req.params.idFornecedor)
+    const produtos = await Tabela.listar(req.fornecedor.id)
     res.send(JSON.stringify(produtos))
 })
 
 roteador.post('/', async (req, res, proximo) => {
     try {
-        const idFornecedor = req.params.idFornecedor
+        const idFornecedor = req.fornecedor.id
         const corpo = req.body
         const dados = Object.assign({}, corpo, {fornecedor: idFornecedor})
         const produto = new Produto(dados)
@@ -24,7 +24,7 @@ roteador.post('/', async (req, res, proximo) => {
 roteador.delete('/:id', async (req, res) => {
     const dados = {
         id: req.params.id,
-        fornecedor: req.params.idFornecedor
+        fornecedor: req.fornecedor.id
     }
     const produto = new Produto(dados)
     await produto.apagar()
@@ -32,15 +32,12 @@ roteador.delete('/:id', async (req, res) => {
     res.end()
 })
 
-//Função não está retornando o produto de id especifico
 roteador.get('/:id', async (req, res, proximo) => {
     try {
         const dados = {
             id: req.params.id,
             fornecedor: req.fornecedor.id
         }
-        //console.log(dados.id)
-    
         const produto = new Produto(dados)
         await produto.carregar()
         res.send(JSON.stringify(produto))
