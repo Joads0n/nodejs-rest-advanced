@@ -34,5 +34,13 @@ module.exports = {
         }
 
         return encontrado
+    },
+    atualizar (dadosDoProduto, dadosParaAtualizar){
+        return Model.update(
+            dadosParaAtualizar,
+            {
+                where: dadosDoProduto
+            }
+        )
     }
 }
