@@ -25,6 +25,9 @@ app.use((requisicao, resposta, proximo) => {
     }
 
     resposta.setHeader('Content-Type', formatoRequisitado)
+
+    resposta.set('X-Powered-By', 'Gatito Petshop')
+
     proximo()
 })
 
