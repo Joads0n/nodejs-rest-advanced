@@ -3,6 +3,13 @@ const Tabela = require('./TabelaProdutos')
 const Produto = require('./Produto')
 const Serializador = require('./../../../Serializador').SerializadorProduto
 
+roteador.options('/', (req, res) => {
+    res.set('Acess-Control-Allow-Methods', 'GET', 'POST')
+    res.set('Acess-Control-Allow-Headers', 'Content-Type')
+    res.status(204)
+    res.end()
+})
+
 roteador.get('/', async (req, res) => {
     const produtos = await Tabela.listar(req.fornecedor.id)
     const serializador = new Serializador(
@@ -39,6 +46,13 @@ roteador.delete('/:id', async (req, res) => {
     }
     const produto = new Produto(dados)
     await produto.apagar()
+    res.status(204)
+    res.end()
+})
+
+roteador.options('/:idFornecedor', (req, res) => {
+    res.set('Access-Control-Allow-Methods', 'GET', 'PUT', 'DELETE')
+    res.set('Access-Control-Allow-Headers', 'Content-Type')
     res.status(204)
     res.end()
 })
